@@ -10,7 +10,7 @@ function iaGenerator(mapSize) {
         * @return {string}
         */
         getName: function getName() {
-            return "Beep";
+            return "Sejuapig";
         },
 
         /**
@@ -31,11 +31,11 @@ function iaGenerator(mapSize) {
          * @return {void}
          */
         onResponseX: function onResponseX(hPosition) {
-          if(hPosition > 0){
+          /*if(hPosition > 0){
             return 1;
           } else if (hPosition < 0) {
             return -1
-          } else return 0;
+          } else return 0;*/
                     console.log(hPosition);
                 },
 
@@ -47,11 +47,11 @@ function iaGenerator(mapSize) {
          * @return {void}
          */
         onResponseY: function (vPosition) {
-          if(position.y-vPosition > 0){
+          /*if(position.y-vPosition > 0){
             return 1;
           } else if (position.y-vPosition < 0) {
             return -1
-          } else return 0;
+          } else return 0;*/
             //1 je suis trop bas
             //-1 je suis trop haut
             //0 je suis en face de la sortie
@@ -69,7 +69,7 @@ function iaGenerator(mapSize) {
         */
         action: function action(position, round, walls) {
             //à vous de gérer la logique de décision
-            if(round === 1){
+            /*if(round === 1){
               var action = {  action: "ask",
                               params: "x"
                             };
@@ -78,7 +78,7 @@ function iaGenerator(mapSize) {
               var action = {  action: "ask",
                               params: "y"
                             };
-            }
+            }*/
             // pour retourner l'objet qui correspond à l'action
             // que votre bot devrait faire (voir README)
             return action;
