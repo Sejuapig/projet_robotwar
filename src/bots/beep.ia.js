@@ -1,14 +1,16 @@
 function iaGenerator(mapSize) {
-  var positionRel = {x : "", y : ""};
-  var isXGood = false;
-  var isYGood = false;
+    var positionRel = {x: "", y: ""};
+    var isXGood = false;
+    var isYGood = false;
+    var thereIsAWinner = false;
+    var winnerPos = {x: "", y: ""};
 
     return {
         /**
-        * getName - Retourne ici ton nom de guerrier
-        *
-        * @return {string}
-        */
+         * getName - Retourne ici ton nom de guerrier
+         *
+         * @return {string}
+         */
         getName: function getName() {
             return "Beep";
         },
@@ -20,7 +22,9 @@ function iaGenerator(mapSize) {
          * @return {void}
          */
         onFriendWins: function onFriendWins(exit) {
-            console.log(exit);
+            thereIsAWinner = true;
+            winnerPos.x = exit.x;
+            winnerPos.y = exit.y;
         },
 
         /**
@@ -31,7 +35,7 @@ function iaGenerator(mapSize) {
          * @return {void}
          */
         onResponseX: function onResponseX(hPosition) {
-          positionRel.x = hPosition;
+            positionRel.x = hPosition;
         },
 
         /**
@@ -46,39 +50,76 @@ function iaGenerator(mapSize) {
         },
 
         /**
-        * action - fonction appelée par le moteur de jeu à chaque tour
-        * ici, il faut retourner un object qui décrit
-        * l'action que doit faire le bot pour ce tour.
-        *
-        * @param {object} position - la position actuelle de votre bot
-        * @param {number} round - le numéro de tour en cours
-        * @return {object} action - l'action à effectuer
-        */
+         * action - fonction appelée par le moteur de jeu à chaque tour
+         * ici, il faut retourner un object qui décrit
+         * l'action que doit faire le bot pour ce tour.
+         *
+         * @param {object} position - la position actuelle de votre bot
+         * @param {number} round - le numéro de tour en cours
+         * @return {object} action - l'action à effectuer
+         */
         action: function action(position, round, walls) {
-        if(round%10 == 0 && !isXGood && !isYGood){
-          positionRel.x = null;
-          positionRel.y = null;
-        }else if(round%10 == 0 && !isXGood){
-          positionRel.x = null;
-        }else if(round%10 == 0 && !isYGood){
-          positionRel.y = null;
-        }
-        if(positionRel.x == null && !isXGood){
-          action = {
-            action: "ask",
-            params: "x" //ou y
-          }
-          return action;
-        }else if(positionRel.y == null !isYGood){
-          action = {
-            action: "ask",
-            params: "y" //ou y
-          }
-          return action;
-        }else{
-          if(position)
+            var action = {};
+            if (thereIsAWinner) {
+                action = {
+                    action: "teleport",
+                    params: {
+                        x: winnerPos.x,
+                        y: winnerPos.y
+                    }
+                }
+            }
+            if (round % 5 === 0 && !isXGood && !isYGood) {
+                positionRel.x = null;
+                positionRel.y = null;
+            } else if (round % 5 == 0 && !isXGood) {
+                positionRel.x = null;
+            } else if (round % 5 == 0 && !isYGood) {
+                positionRel.y = null;
+            }
+            if (positionRel.x == null && !isXGood && round % 5 == 0) {
+                action = {
+                    action: "ask",
+                    params: "x" //ou y
+                }
+                return action;
+            } else if (positionRel.y == null && !isYGood && round % 5 == 1) {
+                action = {
+                    action: "ask",
+                    params: "y" //ou y
+                }
+                return action;
+            } else {
+                if (!isXGood && !isYGood) {
+                    action = {
+                        action: "move",
+                        params: {
+                            dx: positionRel.x, //1 mouvement positif, -1 mouvement négatif, 0 aucun mouvement sur cet axe
+                            dy: positionRel.y
+                        }
+                    }
+                }
+                else if (!isXGood) {
+                    action = {
+                        action: "move",
+                        params: {
+                            dx: positionRel.x, //1 mouvement positif, -1 mouvement négatif, 0 aucun mouvement sur cet axe
+                            dy: 0
+                        }
+                    }
+                } else if (!isYGood) {
+                    action = {
+                        action: "move",
+                        params: {
+                            dx: 0, //1 mouvement positif, -1 mouvement négatif, 0 aucun mouvement sur cet axe
+                            dy: positionRel.y
+                        }
+                    }
+                }
+                return action;
+            }
         }
     };
 }
 
-module.exports = iaGenerator;
+module.ex
